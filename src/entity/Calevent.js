@@ -1,9 +1,13 @@
+import "reflect-metadata";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Calevent {
-  @Column()
+  @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  uuid: string;
 
   @Column()
   title: string;

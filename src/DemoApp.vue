@@ -1,11 +1,13 @@
 <script>
-import { defineComponent } from 'vue'
-import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
-import { calRepository } from './Calrepository.ts'
+import { defineComponent } from "vue";
+import "reflect-metadata";
+import FullCalendar from "@fullcalendar/vue3";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { INITIAL_EVENTS, createEventId } from "./event-utils";
+import { calRepository } from "./Calrepository.ts";
+import { Calevent } from "./entity/Calevent.ts";
 export default defineComponent({
   components: {
     FullCalendar,
@@ -16,14 +18,14 @@ export default defineComponent({
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin // needed for dateClick
+          interactionPlugin, // needed for dateClick
         ],
         headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
-        initialView: 'dayGridMonth',
+        initialView: "dayGridMonth",
         initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
@@ -32,7 +34,7 @@ export default defineComponent({
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
+        eventsSet: this.handleEvents,
         /* you can update a remote database when these fire:
         eventAdd:
         eventChange:
@@ -40,46 +42,51 @@ export default defineComponent({
         */
       },
       currentEvents: [],
-    }
+    };
   },
   methods: {
     handleWeekendsToggle() {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
+      this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
     },
-    handleDateSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectInfo.view.calendar
+    async handleDateSelect(selectInfo) {
+      let title = prompt("Please enter a new title for your event");
+      let calendarApi = selectInfo.view.calendar;
 
-      calendarApi.unselect() // clear date selection
+      calendarApi.unselect(); // clear date selection
 
       if (title) {
+        let newuuid = createEventId();
         calendarApi.addEvent({
-          id: createEventId(),
+          uuid: newuuid,
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        })
+          allDay: selectInfo.allDay,
+        });
         const newEvent = new Calevent({
-          id: createEventId(),
-          title,
+          uuid: newuuid,
+          title: title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        })
-        await calRepository.save(newEvent);  // Inserts or updates the user
+          allDay: selectInfo.allDay,
+        });
+        await calRepository.save(newEvent); // Inserts or updates the user
       }
     },
     handleEventClick(clickInfo) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
+      if (
+        confirm(
+          `Are you sure you want to delete the event '${clickInfo.event.title}'`
+        )
+      ) {
+        clickInfo.event.remove();
       }
     },
     handleEvents(events) {
-      this.currentEvents = events
+      this.currentEvents = events;
     },
-  }
-})
+  },
+});
 </script>
 
 <template>
@@ -106,7 +113,7 @@ export default defineComponent({
       <div class="demo-app-sidebar-section">
         <h2>All Events ({{ currentEvents.length }})</h2>
         <ul>
-          <li v-for="event in currentEvents" :key="event.id">
+          <li v-for="event in currentEvents" :key="event.uuid">
             <b>{{ event.startStr }}</b>
             <i>{{ event.title }}</i>
           </li>
