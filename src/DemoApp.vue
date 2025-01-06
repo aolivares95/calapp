@@ -6,8 +6,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
-import { calRepository } from "./Calrepository.ts";
-import { Calevent } from "./entity/Calevent.ts";
+import { calRepository } from "./Calrepository.js";
+import { Calevent } from "./entity/Calevent.js";
+//JS example: https://github.com/typeorm/javascript-example/blob/master/src/app3-es6/index.js
 export default defineComponent({
   components: {
     FullCalendar,

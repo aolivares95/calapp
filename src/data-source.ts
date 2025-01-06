@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   database: "test",
   synchronize: true,
   logging: false,
-  entities: [Calevent],
+  entities: [],
   migrations: [],
   subscribers: [],
 });

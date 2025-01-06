@@ -1,23 +1,29 @@
 import "reflect-metadata";
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { EntitySchema } from "typeorm";
 
-@Entity()
-export class Calevent {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  uuid: string;
-
-  @Column()
-  title: string;
-
-  @Column()
-  start: string;
-
-  @Column()
-  end: string;
-
-  @Column()
-  allday: boolean;
-}
+module.exports = new EntitySchema({
+  name: "Calevent",
+  target: Category,
+  columns: {
+    id: {
+      primary: true,
+      type: "int",
+      generated: true,
+    },
+    uuid: {
+      type: "varchar",
+    },
+    title: {
+      type: "varchar",
+    },
+    start: {
+      type: "varchar",
+    },
+    end: {
+      type: "varchar",
+    },
+    allday: {
+      type: "bool",
+    },
+  },
+});
