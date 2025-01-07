@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 
 // MySQL Connection
 const connection = mysql.createConnection({
+  name: "default",
   host: "localhost",
   user: "root",
   password: "password",
@@ -34,16 +35,18 @@ app.get("/calevents", (req, res) => {
   });
 });
 
-app.post("/addResume", (req, res) => {
+app.post("/addCalevent", (req, res) => {
   const { title, uuid, start, end, allday } = req.body;
+  // finish logic using this https://www.bezkoder.com/vue-js-node-js-express-mysql-crud-example/
+  //   let calRepository = getConnection("default").getRepository(Calevent);
 
-  let resRepository = getConnection("default").getRepository(Resume);
-
-  resRepository.save({
-    name: name,
-    phoneNumber: phoneNumber,
-    uuid: uuid,
-  });
+  //   calRepository.save({
+  //     title: title,
+  //     start: start,
+  //     uuid: uuid,
+  //     end: end,
+  //     allday: allday
+  //   });
 });
 
 app.listen(5000, () => {
