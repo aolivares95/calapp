@@ -6,9 +6,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
-import { calRepository } from "./Calrepository.js";
-import { Calevent } from "./entity/Calevent.js";
-//JS example: https://github.com/typeorm/javascript-example/blob/master/src/app3-es6/index.js
+import { Calevent } from "./models/Calevent.js"; //JS example: https://github.com/typeorm/javascript-example/blob/master/src/app3-es6/index.js
 export default defineComponent({
   components: {
     FullCalendar,
@@ -52,7 +50,6 @@ export default defineComponent({
     async handleDateSelect(selectInfo) {
       let title = prompt("Please enter a new title for your event");
       let calendarApi = selectInfo.view.calendar;
-
       calendarApi.unselect(); // clear date selection
 
       if (title) {
@@ -71,7 +68,6 @@ export default defineComponent({
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
         });
-        await calRepository.save(newEvent); // Inserts or updates the user
       }
     },
     handleEventClick(clickInfo) {
