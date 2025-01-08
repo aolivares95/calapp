@@ -1,15 +1,19 @@
-import * as express from "express";
-import * as mysql from "msql2";
-import * as cors from "cors";
-import * as bodyParser from "cors";
-
+import express from "express";
+import mysql from "mysql2";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { db } from "../models/index.js";
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
 
+let corsOptions = {
+  origin: "http://localhost:8081",
+};
+
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // MySQL Connection
 const connection = mysql.createConnection({
-  name: "default",
   host: "localhost",
   user: "root",
   password: "password",
@@ -24,6 +28,10 @@ connection.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the calendar app" });
+});
+
 app.get("/calevents", (req, res) => {
   connection.query("SELECT * FROM calevent", (err, results) => {
     if (err) {
@@ -34,6 +42,7 @@ app.get("/calevents", (req, res) => {
     res.send(results);
   });
 });
+db.sequelize.sync();
 
 app.post("/addCalevent", (req, res) => {
   const { title, uuid, start, end, allday } = req.body;

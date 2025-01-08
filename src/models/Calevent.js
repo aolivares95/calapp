@@ -1,10 +1,21 @@
-export class Calevent {
-  constructor(id, title, uuid, start, end, allday) {
-    this.id = id;
-    this.title = title;
-    this.uuid = uuid;
-    this.start = start;
-    this.end = end;
-    this.allday = allday;
-  }
-}
+export default (sequelize, Sequelize) => {
+  const Calevent = sequelize.define("calevent", {
+    title: {
+      type: Sequelize.STRING,
+    },
+    uuid: {
+      type: Sequelize.STRING,
+    },
+    start: {
+      type: Sequelize.STRING,
+    },
+    end: {
+      type: Sequelize.STRING,
+    },
+    allday: {
+      type: Sequelize.BOOLEAN,
+    },
+  });
+
+  return Calevent;
+};
