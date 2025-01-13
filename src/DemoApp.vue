@@ -1,12 +1,12 @@
 <script>
 import { defineComponent } from "vue";
-import "reflect-metadata";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
-import { Calevent } from "./models/Calevent.js"; //JS example: https://github.com/typeorm/javascript-example/blob/master/src/app3-es6/index.js
+import CaleventDataService from "../src/services/CaleventDataService";
+import Calevent from "./models/Calevent.js"; //JS example: https://github.com/typeorm/javascript-example/blob/master/src/app3-es6/index.js
 export default defineComponent({
   components: {
     FullCalendar,
@@ -44,6 +44,16 @@ export default defineComponent({
     };
   },
   methods: {
+    retrieveCalevents() {
+      CaleventDataService.findAll()
+        .then((response) => {
+          this.currentEvents = response.data;
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
     },
@@ -61,13 +71,22 @@ export default defineComponent({
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
         });
-        const newEvent = new Calevent({
+        var event = {
           uuid: newuuid,
           title: title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
-        });
+        };
+
+        CaleventDataService.create(event)
+          .then((data) => {
+            res.send(data);
+            console.log(response.data);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     },
     handleEventClick(clickInfo) {
@@ -76,11 +95,21 @@ export default defineComponent({
           `Are you sure you want to delete the event '${clickInfo.event.title}'`
         )
       ) {
+        CaleventDataService.delete(clickInfo.event.uuid)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
         clickInfo.event.remove();
       }
     },
     handleEvents(events) {
       this.currentEvents = events;
+    },
+    mounted() {
+      this.retrieveCalevents();
     },
   },
 });
