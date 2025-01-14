@@ -70,26 +70,26 @@ export function findOne(req, res) {
 
 // exports.update = (req, res) => {};
 
-export function deleteOne(req, res) {
-  const id = req.params.id;
+export function Delete(req, res) {
+  const uuid = req.params.uuid;
 
   Calevent.destroy({
-    where: { id: id },
+    where: { uuid: uuid },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was deleted successfully!",
+          message: "event was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Calevent with id=${id}. Maybe Tutorial was not found!`,
+          message: `Cannot delete Calevent with uuid=${uuid}. Maybe event was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Calevent with id=" + id,
+        message: "Could not delete Calevent with uuid=" + uuid,
       });
     });
 }

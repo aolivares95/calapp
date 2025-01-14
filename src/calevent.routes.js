@@ -14,13 +14,13 @@ export const app = (app) => {
   //   router.get("/published", calevent.findAllPublished);
 
   // Retrieve a single calevent with id
-  router.get("/:id", calevent.findOne);
+  router.get("/:uuid", calevent.findOne);
 
   // Update a calevent with id
   // router.put("/:id", calevent.update);
 
   // Delete a calevent with id
-  router.delete("/:id", calevent.deleteOne);
+  router.delete("/:uuid", calevent.Delete);
 
   // Delete all calevent
   // router.delete("/", calevent.deleteAll);

@@ -18,6 +18,7 @@ class CaleventDataService {
   }
 
   delete(uuid) {
+    console.log(JSON.stringify(uuid));
     return http.delete(`/calevent/${uuid}`);
   }
 

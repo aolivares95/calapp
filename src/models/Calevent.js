@@ -5,6 +5,7 @@ export default (sequelize, Sequelize) => {
     },
     uuid: {
       type: Sequelize.STRING,
+      primaryKey: true,
     },
     start: {
       type: Sequelize.STRING,

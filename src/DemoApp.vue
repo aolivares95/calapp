@@ -43,12 +43,15 @@ export default defineComponent({
       currentEvents: [],
     };
   },
+  mounted() {
+    this.retrieveCalevents();
+  },
   methods: {
-    retrieveCalevents() {
-      CaleventDataService.findAll()
+    async retrieveCalevents() {
+      await CaleventDataService.findAll()
         .then((response) => {
           this.currentEvents = response.data;
-          console.log(response.data);
+          console.log(this.currentEvents);
         })
         .catch((e) => {
           console.log(e);
@@ -63,7 +66,7 @@ export default defineComponent({
       calendarApi.unselect(); // clear date selection
 
       if (title) {
-        let newuuid = createEventId();
+        let newuuid = crypto.randomUUID();
         calendarApi.addEvent({
           uuid: newuuid,
           title,
@@ -90,14 +93,18 @@ export default defineComponent({
       }
     },
     handleEventClick(clickInfo) {
+      console.log(
+        "clicked event: " + JSON.stringify(clickInfo.event.extendedProps.uuid)
+      );
       if (
         confirm(
           `Are you sure you want to delete the event '${clickInfo.event.title}'`
         )
       ) {
-        CaleventDataService.delete(clickInfo.event.uuid)
+        CaleventDataService.delete(clickInfo.event.extendedProps.uuid)
           .then((response) => {
-            console.log(response.data);
+            res.send(response);
+            console.log(clickInfo.event.uuid);
           })
           .catch((e) => {
             console.log(e);
@@ -107,9 +114,6 @@ export default defineComponent({
     },
     handleEvents(events) {
       this.currentEvents = events;
-    },
-    mounted() {
-      this.retrieveCalevents();
     },
   },
 });
