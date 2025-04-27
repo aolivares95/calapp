@@ -13,7 +13,7 @@ export default (sequelize, Sequelize) => {
     end: {
       type: Sequelize.STRING,
     },
-    allday: {
+    allDay: {
       type: Sequelize.BOOLEAN,
     },
   });

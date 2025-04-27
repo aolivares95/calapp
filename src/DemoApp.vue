@@ -6,7 +6,6 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import CaleventDataService from "../src/services/CaleventDataService";
-import Calevent from "./models/Calevent.js"; //JS example: https://github.com/typeorm/javascript-example/blob/master/src/app3-es6/index.js
 export default defineComponent({
   components: {
     FullCalendar,
@@ -25,7 +24,8 @@ export default defineComponent({
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
         initialView: "dayGridMonth",
-        initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        events: this.events,
+        // initialEvents: this.retrieveCalevents, // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -44,14 +44,28 @@ export default defineComponent({
     };
   },
   mounted() {
+    // let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
+    // selectInfo.view.calendar.addEvent({
+    //   uuid: 3,
+    //   title: "test",
+    //   start: todayStr,
+    //   allDay: true,
+    // });
     this.retrieveCalevents();
   },
   methods: {
     async retrieveCalevents() {
       await CaleventDataService.findAll()
         .then((response) => {
-          this.currentEvents = response.data;
-          console.log(this.currentEvents);
+          // let calendarApi = selectInfo.view.calendar;
+          this.calendarOptions.events = response.data.map((event) => ({
+            uuid: event.uuid,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay,
+          }));
+          this.currentEvents = this.calendarOptions.events;
         })
         .catch((e) => {
           console.log(e);
@@ -74,6 +88,11 @@ export default defineComponent({
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
         });
+        if (selectInfo.allDay == true) {
+          var allVal = 1;
+        } else {
+          var allVal = 0;
+        }
         var event = {
           uuid: newuuid,
           title: title,
@@ -81,7 +100,7 @@ export default defineComponent({
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
         };
-
+        console.log("event being saved" + JSON.stringify(event));
         CaleventDataService.create(event)
           .then((data) => {
             res.send(data);
@@ -110,6 +129,7 @@ export default defineComponent({
             console.log(e);
           });
         clickInfo.event.remove();
+        console.log(JSON.stringify(this.currentEvents));
       }
     },
     handleEvents(events) {
@@ -153,8 +173,8 @@ export default defineComponent({
     <div class="demo-app-main">
       <FullCalendar class="demo-app-calendar" :options="calendarOptions">
         <template v-slot:eventContent="arg">
-          <b>{{ arg.timeText }}</b>
-          <i>{{ arg.event.title }}</i>
+          <b>{{ arg.event.title }}</b>
+          <i>{{ arg.event.startStr }}</i>
         </template>
       </FullCalendar>
     </div>
