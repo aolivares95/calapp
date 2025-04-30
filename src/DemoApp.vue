@@ -4,7 +4,6 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import CaleventDataService from "../src/services/CaleventDataService";
 export default defineComponent({
   components: {
@@ -25,7 +24,6 @@ export default defineComponent({
         },
         initialView: "dayGridMonth",
         events: this.events,
-        // initialEvents: this.retrieveCalevents, // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -44,20 +42,12 @@ export default defineComponent({
     };
   },
   mounted() {
-    // let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
-    // selectInfo.view.calendar.addEvent({
-    //   uuid: 3,
-    //   title: "test",
-    //   start: todayStr,
-    //   allDay: true,
-    // });
     this.retrieveCalevents();
   },
   methods: {
     async retrieveCalevents() {
       await CaleventDataService.findAll()
         .then((response) => {
-          // let calendarApi = selectInfo.view.calendar;
           this.calendarOptions.events = response.data.map((event) => ({
             uuid: event.uuid,
             title: event.title,
@@ -88,11 +78,6 @@ export default defineComponent({
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
         });
-        if (selectInfo.allDay == true) {
-          var allVal = 1;
-        } else {
-          var allVal = 0;
-        }
         var event = {
           uuid: newuuid,
           title: title,
@@ -100,7 +85,6 @@ export default defineComponent({
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
         };
-        console.log("event being saved" + JSON.stringify(event));
         CaleventDataService.create(event)
           .then((data) => {
             res.send(data);
@@ -112,9 +96,6 @@ export default defineComponent({
       }
     },
     handleEventClick(clickInfo) {
-      console.log(
-        "clicked event: " + JSON.stringify(clickInfo.event.extendedProps.uuid)
-      );
       if (
         confirm(
           `Are you sure you want to delete the event '${clickInfo.event.title}'`
@@ -129,7 +110,6 @@ export default defineComponent({
             console.log(e);
           });
         clickInfo.event.remove();
-        console.log(JSON.stringify(this.currentEvents));
       }
     },
     handleEvents(events) {

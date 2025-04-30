@@ -1,6 +1,6 @@
 import { dbConfig } from "../server/db.config.js";
 import { Sequelize } from "sequelize";
-import calevent from "./calevent.js";
+import calevent from "./Calevent.js";
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,

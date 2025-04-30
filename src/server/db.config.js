@@ -1,7 +1,7 @@
 export const dbConfig = {
-  HOST: "localhost",
+  HOST: "mysql",
   USER: "root",
-  PASSWORD: "password",
+  PASSWORD: "Weiser32",
   DB: "calevent_db",
   dialect: "mysql",
   pool: {
