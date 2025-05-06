@@ -6,22 +6,24 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     ports:
-      - "3000:3000"
+      - "8080:8080"
     environment:
       - DB_HOST=mysql
       - DB_USER=root
       - DB_PASSWORD=Weiser32
-      - DB_NAME=mydb
+      - DB_NAME=calevent_db
+    entrypoint: /bin/bash -c "/src/wait-for.sh && http-server dist"
 
   mysql:
     image: mysql:8
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: Weiser32
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: calevent_db
+    ports:
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
@@ -38,6 +40,6 @@ services:
         ]
       interval: 5s
       timeout: 10s
-      retries: 5
+      retries: 10
 volumes:
   mysql-data:
