@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      - network1
     depends_on:
       - mysql
     ports:
@@ -14,11 +16,32 @@ services:
       - DB_USER=root
       - DB_PASSWORD=Weiser32
       - DB_NAME=calevent_db
-    entrypoint: /bin/bash -c "/src/wait-for.sh && http-server dist"
+    entrypoint: /bin/bash -c "/src/wait-for.sh && http-server dist --cors && node /src/app.js"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: express_api
+    restart: always
+    depends_on:
+      - mysql
+    networks:
+      - network1
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: Weiser32
+      DB_NAME: calevent_db
+    ports:
+      - "5000:5000"
+
 
   mysql:
     image: mysql:8
     restart: always
+    networks:
+      - network1
     environment:
       MYSQL_ROOT_PASSWORD: Weiser32
       MYSQL_DATABASE: calevent_db
@@ -43,3 +66,8 @@ services:
       retries: 10
 volumes:
   mysql-data:
+
+networks:
+  network1:
+    name: my-network
+    external: true

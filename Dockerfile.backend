@@ -1,0 +1,6 @@
+FROM node:18
+COPY package.json .
+RUN npm install
+COPY . .
+CMD ["node", "/src/server/app.js"]
+EXPOSE 5000

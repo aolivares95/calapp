@@ -19,12 +19,11 @@
     "parser": "^0.1.4",
     "sequelize": "^6.37.5",
     "uuid": "^11.0.5",
-    "vue": "^3.2.45"
+    "vite": "^6.3.5",
+    "@vitejs/plugin-vue": "^5.2.3"
   },
   "devDependencies": {
-    "@types/node": "^22.10.5",
-    "@vitejs/plugin-vue": "^5.2.3",
-    "vite": "^6.3.5"
+    "@types/node": "^22.10.5"
   },
   "scripts": {
     "dev": "vite",
