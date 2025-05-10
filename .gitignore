@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .idea/
 .vscode/
 node_modules/
@@ -10,3 +11,17 @@ server.key
 docker-compose-linux-x86_64.provenance.json
 docker-compose-linux-x86_64.sbom.json
 docker-compose-linux-x86_64.sha256
+=======
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+server.crt
+server.key
+.env
+docker-compose-linux-x86_64.provenance.json
+docker-compose-linux-x86_64.sbom.json
+docker-compose-linux-x86_64.sha256
+>>>>>>> e1fbb6a (changes to add .env)

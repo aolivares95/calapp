@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: "3.8"
 
 services:
@@ -49,3 +50,61 @@ networks:
   network1:
     name: my-network
     driver: bridge
+=======
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    networks:
+      - network1
+    depends_on:
+      - mysql
+    ports:
+      - "443:443"
+    entrypoint: /bin/bash -c "/src/wait-for.sh && http-server -S -C /src/server/server.crt -K /src/server/server.key -p 443 dist --cors && node /src/app.js"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    env_file:
+      - .env
+    container_name: express_api
+    restart: always
+    depends_on:
+      - mysql
+    networks:
+      - network1
+    ports:
+      - "5000:5000"
+
+  mysql:
+    image: mysql:8
+    restart: always
+    networks:
+      - network1
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "$DB_HOST", "-u", "$DB_USER", "-p$DB_PASSWORD"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+volumes:
+  mysql-data:
+
+networks:
+  network1:
+    name: my-network
+    driver: bridge
+>>>>>>> e1fbb6a (changes to add .env)
