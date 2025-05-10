@@ -4,3 +4,9 @@ node_modules/
 build/
 tmp/
 temp/
+server.crt
+server.key
+.env
+docker-compose-linux-x86_64.provenance.json
+docker-compose-linux-x86_64.sbom.json
+docker-compose-linux-x86_64.sha256

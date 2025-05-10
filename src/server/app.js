@@ -3,8 +3,11 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { db } from "../models/index.js";
 import { app } from "../calevent.routes.js";
+import https from "https";
+import fs from "fs";
+
 let corsOptions = {
-  origin: "http://localhost:8081",
+	origin: "https://192.168.1.236:8081",
 };
 let app2 = express();
 app2.use(cors(corsOptions));
@@ -13,7 +16,13 @@ app2.use(bodyParser.urlencoded({ extended: true }));
 
 db.sequelize.sync();
 
-app(app2);
-app2.listen(5000, () => {
-  console.log("Server listening on port 5000");
+const options = {
+  key: fs.readFileSync('src/server/server.key'),
+  cert: fs.readFileSync('src/server/server.crt')
+};
+
+app(app2)
+https.createServer(options, app2).listen(5000, "0.0.0.0", () => {
+  console.log("Server running on HTTPS at https://192.168.1.236:5000");
 });
+

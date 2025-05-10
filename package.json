@@ -9,18 +9,22 @@
     "@fullcalendar/interaction": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
     "@fullcalendar/vue3": "^6.1.10",
+    "@vitejs/plugin-vue": "^5.2.3",
     "axios": "^1.7.9",
     "body": "^5.1.0",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "http-server": "^14.1.1",
+    "https": "^1.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.12.0",
     "parser": "^0.1.4",
     "sequelize": "^6.37.5",
     "uuid": "^11.0.5",
-    "vite": "^6.3.5",
-    "@vitejs/plugin-vue": "^5.2.3"
+    "vite": "^6.3.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.5"
