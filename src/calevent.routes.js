@@ -26,8 +26,9 @@ export const app = (app) => {
   // router.delete("/", calevent.deleteAll);
 
   app.get("/swagger/swagger-output.json", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "swagger-output.json"));
+    const filePath = path.join(process.cwd(), "swagger-output.json");
+    console.log("Looking for file at:", filePath);
+    res.sendFile(filePath);
   });
-
   app.use("/api/calevent", router);
 };
