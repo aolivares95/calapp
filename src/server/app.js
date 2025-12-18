@@ -7,7 +7,7 @@ import https from "https";
 import fs from "fs";
 
 let corsOptions = {
-	origin: "https://192.168.1.236",
+	origin: "https://192.168.1.251",
 };
 let app2 = express();
 app2.use(cors(corsOptions));
@@ -23,6 +23,6 @@ const options = {
 
 app(app2)
 https.createServer(options, app2).listen(5000, "0.0.0.0", () => {
-  console.log("Server running on HTTPS at https://192.168.1.236:5000");
+  console.log("Server running on HTTPS at https://192.168.1.251:5000");
 });
 
