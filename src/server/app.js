@@ -21,7 +21,7 @@ const options = {
   cert: fs.readFileSync('src/server/server.crt')
 };
 
-app.get("/swagger/swagger-output.json", (req, res) => {
+app2.get("/swagger/swagger-output.json", (req, res) => {
   const filePath = path.join(process.cwd(), "swagger-output.json");
   console.log("Looking for file at:", filePath);
   res.sendFile(filePath);
