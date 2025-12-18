@@ -25,7 +25,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app2.get("/swagger/swagger-output.json", (req, res) => {
-  res.sendFile(path.join(__dirname, "swagger", "semgrep-output.json"));
+  res.sendFile(path.join(__dirname, "swagger", "swagger-output.json"));
 });
 
 // ✅ Register API routes
