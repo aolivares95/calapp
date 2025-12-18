@@ -5,7 +5,7 @@ const doc = {
     title: 'My Calapp API',
     description: 'modify calendar events and save to DB'
   },
-  host: 'https://192.168.1.251'
+  host: '192.168.1.251'
 };
 
 const outputFile = './swagger-output.json';

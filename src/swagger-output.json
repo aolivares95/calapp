@@ -5,10 +5,10 @@
     "description": "modify calendar events and save to DB",
     "version": "1.0.0"
   },
-  "host": "https://192.168.1.251",
+  "host": "192.168.1.251",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {
