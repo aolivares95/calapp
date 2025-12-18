@@ -21,6 +21,12 @@ const options = {
   cert: fs.readFileSync('src/server/server.crt')
 };
 
+app.get("/swagger/swagger-output.json", (req, res) => {
+  const filePath = path.join(process.cwd(), "swagger-output.json");
+  console.log("Looking for file at:", filePath);
+  res.sendFile(filePath);
+});
+
 app(app2)
 https.createServer(options, app2).listen(5000, "0.0.0.0", () => {
   console.log("Server running on HTTPS at https://192.168.1.251:5000");
